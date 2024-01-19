@@ -7,11 +7,6 @@ import { cn } from "@components/utils";
 
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
-import { signal } from "@preact/signals-react";
-
-const BUTTON_VARIANT = signal<Variants>("default");
-const BUTTON_SIZE = signal<Sizes>("default");
-
 const GlueStackButton = createButton({
   Root: Pressable,
   Text,
@@ -21,36 +16,31 @@ const GlueStackButton = createButton({
 });
 
 const button = tv({
-  base: "group/solid items-center justify-center rounded-md text-sm font-medium web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-slate-950 web:disabled:pointer-events-none web:disabled:opacity-50 web:dark:focus-visible:ring-slate-300",
-  // variants: {
-  //   variant: {
-  //     default:
-  //       "bg-slate-900 text-slate-50 web:shadow hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
-  //     destructive:
-  //       "group/destructive bg-red-500 text-slate-50 web:shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90",
-  //     outline:
-  //       "border border-slate-200 bg-white web:shadow-sm hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50",
-  //     secondary:
-  //       "bg-slate-100 text-slate-900 web:shadow-sm hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
-  //     ghost:
-  //       "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
-  //     link: "text-slate-900 web:underline-offset-4 web:hover:underline dark:text-slate-50",
-  //   },
-  //   size: {
-  //     default: "h-9 px-4 py-2",
-  //     sm: "h-8 rounded-md px-3 text-xs",
-  //     lg: "h-10 rounded-md px-8",
-  //     icon: "h-9 w-9",
-  //   },
-  // },
+  base: "group/button items-center justify-center rounded-md text-sm font-medium web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-slate-950 web:disabled:pointer-events-none web:disabled:opacity-50 web:dark:focus-visible:ring-slate-300",
+  variants: {
+    variant: {
+      default:
+        "bg-slate-900 text-slate-50 web:shadow hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
+      destructive:
+        "group/destructive bg-red-500 text-slate-50 web:shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90",
+      outline:
+        "border border-slate-200 bg-white web:shadow-sm hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50",
+      secondary:
+        "bg-slate-100 text-slate-900 web:shadow-sm hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
+      ghost:
+        "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
+      link: "text-slate-900 web:underline-offset-4 web:hover:underline dark:text-slate-50",
+    },
+    size: {
+      default: "h-9 px-4 py-2",
+      sm: "h-8 rounded-md px-3 text-xs",
+      lg: "h-10 rounded-md px-8",
+      icon: "h-9 w-9",
+    },
+  },
 });
 
-console.log(button({ variant: BUTTON_VARIANT.value, size: BUTTON_SIZE.value }));
-("group/button items-center justify-center rounded-md text-sm font-medium web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-1 web:focus-visible:ring-slate-950 web:disabled:pointer-events-none web:disabled:opacity-50 web:dark:focus-visible:ring-slate-300 bg-slate-900 text-slate-50 web:shadow hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 h-9 px-4 py-2");
 type ButtonVariants = VariantProps<typeof button>;
-type Variants = ButtonVariants["variant"];
-type Sizes = ButtonVariants["size"];
-
 const buttonText = tv({
   base: "text-sm font-medium web:transition-colors",
   variants: {
@@ -72,59 +62,25 @@ const buttonText = tv({
     },
   },
 });
-
-type IButton = React.ComponentProps<typeof GlueStackButton> & ButtonVariants;
 const Button = React.forwardRef(
-  (
-    { className, variant, children, size = "default", ...props }: IButton,
-    ref
-  ) => {
-    if (variant) {
-      BUTTON_VARIANT.value = variant;
-    }
-    if (size) {
-      BUTTON_SIZE.value = size;
-    }
-
+  ({ className, variant, size = "default", ...props }: any, ref) => {
     return (
-      <Pressable className={cn(button(), className)}>{children}</Pressable>
+      <GlueStackButton
+        className={cn(button({ variant, size }), className)}
+        ref={ref}
+        {...props}
+      />
     );
-    // return (
-    //   <GlueStackButton
-    //     className={cn(
-    //       button({ variant: BUTTON_VARIANT.value, size: BUTTON_SIZE.value }),
-    //       className
-    //     )}
-    //     {...props}
-    //     context={{
-    //       variants: {
-    //         variant: BUTTON_VARIANT.value,
-    //         size: BUTTON_SIZE.value,
-    //       },
-    //     }}
-    //     //@ts-ignore
-    //     ref={ref}
-    //   />
-    // );
   }
 );
 
-type IButtonText = React.ComponentProps<typeof GlueStackButton.Text>;
-
 const ButtonText = React.forwardRef(
-  ({ className, ...props }: IButtonText, ref) => {
+  ({ className, variant, size, ...props }: any, ref) => {
     return (
       <GlueStackButton.Text
-        className={cn(
-          buttonText({
-            variant: BUTTON_VARIANT.value,
-            size: BUTTON_SIZE.value,
-          }),
-          className
-        )}
-        {...props}
-        //@ts-ignore
+        className={cn(buttonText({ variant, size }), className)}
         ref={ref}
+        {...props}
       />
     );
   }
