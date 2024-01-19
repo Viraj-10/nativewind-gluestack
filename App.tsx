@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, TextInput, View, Pressable } from "react-native";
 import "./global.css";
+import { ButtonText } from "@components/Button/Button";
 
 import React from "react";
 
@@ -10,9 +11,9 @@ export default function App() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Pressable className={"group/checkbox p-4 bg-fuchsia-700 checked"}>
-        <Text className="group-[.checked]/checkbox:text-fuchsia-100">
+        <ButtonText className="group-[.checked]/checkbox:text-fuchsia-100">
           Check Text
-        </Text>
+        </ButtonText>
       </Pressable>
     </View>
   );

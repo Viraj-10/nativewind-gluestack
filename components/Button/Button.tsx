@@ -1,10 +1,7 @@
 import * as React from "react";
 import { createButton } from "@gluestack-ui/button";
-
 import { tv, VariantProps } from "tailwind-variants";
-
-import { cn } from "@components/utils";
-
+import { cn, tva } from "@components/utils";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
 const GlueStackButton = createButton({
@@ -41,46 +38,45 @@ const button = tv({
 });
 
 type ButtonVariants = VariantProps<typeof button>;
-const buttonText = tv({
+const buttonText = tva({
   base: "text-sm font-medium web:transition-colors",
-  variants: {
+  parentVariants: {
     variant: {
-      default: "text-slate-50 dark:text-slate-900",
+      default: "text-red-500 dark:text-slate-900",
       destructive: "text-slate-50 dark:text-slate-50",
-      outline:
-        "group-hover/button:text-slate-900 dark:group-hover/button:text-slate-50",
-      secondary: "text-black dark:text-slate-50",
-      ghost:
-        "group-hover/button:text-slate-900  dark:group-hover/button:text-slate-50",
-      link: "text-slate-900 web:underline-offset-4 web:group-hover/button:underline dark:text-slate-50",
     },
     size: {
       default: "",
       sm: "text-xs",
-      lg: "",
-      icon: "",
+    },
+  },
+  variants: {
+    variant: {
+      outline: "text-slate-900 dark:text-slate-50",
+    },
+    size: {
+      lg: "text-base",
     },
   },
 });
+
 const Button = React.forwardRef(
   ({ className, variant, size = "default", ...props }: any, ref) => {
-    return (
-      <GlueStackButton
-        className={cn(button({ variant, size }), className)}
-        ref={ref}
-        {...props}
-      />
-    );
+    return <GlueStackButton ref={ref} {...props} />;
   }
 );
 
 const ButtonText = React.forwardRef(
   ({ className, variant, size, ...props }: any, ref) => {
+    console.log(
+      "Object",
+      buttonText({ parentVariants: { variant: "default" }, size: "" })
+    );
     return (
       <GlueStackButton.Text
-        className={cn(buttonText({ variant, size }), className)}
         ref={ref}
         {...props}
+        className={cn(buttonText({ size: "" }))}
       />
     );
   }
