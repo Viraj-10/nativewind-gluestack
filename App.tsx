@@ -1,20 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, TextInput, View, Pressable } from "react-native";
+import "./global.css";
+
+import React from "react";
 
 export default function App() {
+  const [isChecked, setIsChecked] = React.useState(true);
+  const className = isChecked ? "checked" : "";
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Pressable className={"group/checkbox p-4 bg-fuchsia-700 checked"}>
+        <Text className="group-[.checked]/checkbox:text-fuchsia-100">
+          Check Text
+        </Text>
+      </Pressable>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
